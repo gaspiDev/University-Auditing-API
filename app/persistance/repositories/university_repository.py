@@ -1,4 +1,5 @@
 from typing import Annotated
+from fastapi import HTTPException
 from sqlmodel import Session, select
 
 from app.domain.entities.university import University
@@ -6,8 +7,36 @@ from app.domain.entities.university import University
 class UniversityRepository:
   def __init__(self, session: Session):
     self.session = session
-  def read(self):
+  
+  def create(self, university: University):
+    try:
+      self.session.add(university)
+      self.session.commit()
+      self.session.refresh(university)
+      return university
+    except Exception as e:
+      self.session.rollback()
+      raise HTTPException(status_code=404, detail="University already exist: Name, Adress and Contact Email must be unique")
+  
+  def read(self) -> list[University]:
     statement = select(University)
     results = self.session.exec(statement).all()
     return results
-  #instead of returning a str i want to have accses to my db
+  
+  def read_by_id(self, university_id: int) -> University:
+    statement = select(University).where(University.id == university_id)
+    result = self.session.exec(statement).first()
+    if not result:
+      raise HTTPException(status_code=404, detail=f"Id {university_id} doesn't exist.")
+    return result
+  
+  def update():
+    pass
+
+  def delete(self, university_id) -> University:
+    university = self.read_by_id(university_id)
+    university.isActive = False
+    self.session.add(university)
+    self.session.commit()
+    self.session.refresh(university)
+    return university
