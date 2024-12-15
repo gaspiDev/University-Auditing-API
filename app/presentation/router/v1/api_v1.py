@@ -1,5 +1,7 @@
 from fastapi import APIRouter
-from .v1.university_route import UniversityRoute
+
+from app.presentation.router.v1.budget_route import BudgetRouter
+from .university_route import UniversityRoute
 
 
 class ApiRouter:
@@ -14,3 +16,4 @@ class ApiRouter:
     return "v1.0"
 
   router.include_router(UniversityRoute.router)
+  router.include_router(BudgetRouter.router)

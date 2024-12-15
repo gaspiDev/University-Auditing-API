@@ -14,12 +14,12 @@ class UniversityRepository:
       self.session.commit()
       self.session.refresh(university)
       return university
-    except Exception as e:
+    except Exception:
       self.session.rollback()
       raise HTTPException(status_code=404, detail="University already exist: Name, Adress and Contact Email must be unique")
   
   def read(self) -> list[University]:
-    statement = select(University)
+    statement = select(University).where(University.isActive == True)
     results = self.session.exec(statement).all()
     return results
   
@@ -33,8 +33,7 @@ class UniversityRepository:
   def update():
     pass
 
-  def delete(self, university_id) -> University:
-    university = self.read_by_id(university_id)
+  def delete(self, university: University) -> University:
     university.isActive = False
     self.session.add(university)
     self.session.commit()

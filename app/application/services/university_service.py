@@ -68,4 +68,5 @@ class UniversityService:
     pass
   
   def delete(self, university_id: int) -> int:
-    return self.repository.delete(university_id).id
+    university = self.read_by_id(university_id= university_id)
+    return self.repository.delete(university= university).id

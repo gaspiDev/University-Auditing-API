@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .router.api import ApiRouter
+from .router.v1.api_v1 import ApiRouter
 from ..persistance.config.db_startup import db_startup
 
 
