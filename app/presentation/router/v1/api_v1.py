@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 
+from app.presentation.router.v1.auth_router import AuthRouter
 from app.presentation.router.v1.budget_route import BudgetRouter
+from app.presentation.router.v1.user_routes import UserRouter
 from .university_route import UniversityRoute
 
 
@@ -15,5 +17,7 @@ class ApiRouter:
   def version():
     return "v1.0"
 
+  router.include_router(AuthRouter.router)
+  router.include_router(UserRouter.router)
   router.include_router(UniversityRoute.router)
   router.include_router(BudgetRouter.router)

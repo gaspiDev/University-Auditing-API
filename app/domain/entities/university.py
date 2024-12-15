@@ -7,6 +7,7 @@ class University(SQLModel, table=True):
 
   id: Optional[int] = Field(default=None, primary_key=True)
   budget_id: Optional[int] = Field(default=None, foreign_key="budgets.id")
+  dean_id: Optional[int] = Field(default=None, foreign_key="users.id", unique=True)
   name: str = Field(unique=True)
   province: str
   city: str

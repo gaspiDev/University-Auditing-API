@@ -23,6 +23,7 @@ class UniversityService:
 
     university = University(
       budget_id= budget_id,
+      dean_id= university_input.dean_id,
       name= university_input.name,
       province= university_input.province,
       city= university_input.city,

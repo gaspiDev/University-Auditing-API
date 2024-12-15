@@ -8,5 +8,5 @@ class Budget(SQLModel, table=True):
   type: str
   year: int
   total_budget: float
-  approved_by: Optional[str] = None
+  approved_by: Optional[int] = Field(foreign_key="users.id")
   isActive: Optional[bool] = True
