@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
 
 from app.application.schemas.user.user_for_creation import UserForCreation
+from app.application.schemas.user.user_for_view import UserForView
 from app.application.services.user_service import UserService
 from app.persistance.config.database import get_db
 from helpers.auth_functions import current_user
@@ -16,7 +17,7 @@ class UserRouter:
     service = UserService(session)
     return {"status": 201, "message": f"User ID: {service.create(user_for_creation)} successfully created."}
   
-  @router.get("/", status_code=200)
+  @router.get("/", status_code=200, response_model=UserForView)
   async def read_current(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     service = UserService(session)
     return service.read_by_id(user["id"])
@@ -25,7 +26,7 @@ class UserRouter:
   def update(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     pass
 
-  @router.delete("/", status_code=200)
+  @router.delete("/", status_code=200, response_model=dict)
   def delete(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     service = UserService(session)
     return {"status": 200, "message": f"User ID: {service.delete(user["id"])} successfully deleted."}

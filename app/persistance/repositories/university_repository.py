@@ -8,7 +8,7 @@ class UniversityRepository:
   def __init__(self, session: Session):
     self.session = session
   
-  def create(self, university: University):
+  def create(self, university: University) -> University:
     try:
       self.session.add(university)
       self.session.commit()

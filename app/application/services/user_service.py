@@ -19,7 +19,7 @@ class UserService:
     self.bcrypt_context = CryptContext(schemes=["bcrypt"])
     load_dotenv()
   
-  def auth(self, dni, password):
+  def auth(self, dni, password) -> dict:
     user: User = self.repository.auth(dni)
     
     if not user:
@@ -46,7 +46,7 @@ class UserService:
     return self.repository.create(user).id
 
   
-  def read_by_id(self, user_id: int) -> User:
+  def read_by_id(self, user_id: int) -> UserForView:
     user = self.repository.read_by_id(user_id)
     if not user:
       raise HTTPException(status_code=404, detail=f"User ID: {user_id} doesn't exists.")

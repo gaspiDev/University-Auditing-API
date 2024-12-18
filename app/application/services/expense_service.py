@@ -41,7 +41,7 @@ class ExpenseService:
 
     return expenses_for_view
   
-  def read_by_id(self, expense_id: int):
+  def read_by_id(self, expense_id: int) -> ExpenseForView:
     expense = self.repository.read_by_id(expense_id)
     if not expense:
       raise HTTPException(status_code=404, detail=f"Expense ID: {expense_id} doesn't exist.")

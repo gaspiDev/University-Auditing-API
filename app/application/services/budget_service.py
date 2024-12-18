@@ -11,7 +11,7 @@ class BudgetServices:
   def __init__(self, session: Session):
     self.repository = BudgetRepository(session)
   
-  def create(self, budget_for_creation: BudgetForCreation):
+  def create(self, budget_for_creation: BudgetForCreation) -> int:
     budgets = self.read()
     for b in budgets:
       if (b.type == budget_for_creation.type) and (b.year == budget_for_creation.year) and (b.approved_by == budget_for_creation.approved_by):
@@ -23,7 +23,7 @@ class BudgetServices:
       total_budget= budget_for_creation.total_budget,
       approved_by= budget_for_creation.approved_by
     )
-    return self.repository.create(budget= budget)
+    return self.repository.create(budget= budget).id
   
   def read(self) -> list[BudgetForView]:
     budgets = self.repository.read()
@@ -39,7 +39,7 @@ class BudgetServices:
       budgets_for_view.append(budget_for_view)
     return budgets_for_view
   
-  def read_by_id(self, budget_id: int):
+  def read_by_id(self, budget_id: int) -> BudgetForView:
     budget = self.repository.read_by_id(budget_id)
     if not budget:
       raise HTTPException(status_code=404, detail=f"Budget ID {budget_id} doesn't exists.")
@@ -55,7 +55,7 @@ class BudgetServices:
   def update(self):
     pass
 
-  def delete(self, budget_id: int):
+  def delete(self, budget_id: int) -> int:
     budget = self.repository.read_by_id(budget_id)
     return self.repository.delete(budget).id
     
