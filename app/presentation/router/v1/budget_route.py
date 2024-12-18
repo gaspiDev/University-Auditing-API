@@ -12,7 +12,7 @@ from app.persistance.config.database import get_db
 class BudgetRouter:
   router = APIRouter(tags=["Budget"], prefix= "/budget")
 
-  @router.post("/")
+  @router.post("/")#party
   def create(budget_req: BudgetForCreation, session: Session = Depends(get_db)):
     serivce = BudgetServices(session)
     return serivce.create(budget_req)
@@ -27,11 +27,11 @@ class BudgetRouter:
     service = BudgetServices(session= session)
     return service.read_by_id(budget_id= budget_id)
 
-  @router.put("/")
-  def update(session: Session = Depends(get_db)):
+  @router.put("/")#party
+  def update(session: Session = Depends(get_db)):#admin
     pass
 
-  @router.delete("/")
+  @router.delete("/")#party
   def delete(budget_id: int, session: Session = Depends(get_db)):
     service = BudgetServices(session= session)
     return f"Budget ID: {service.delete(budget_id)} successfully deleted"

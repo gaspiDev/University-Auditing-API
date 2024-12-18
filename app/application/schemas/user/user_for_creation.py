@@ -7,4 +7,3 @@ class UserForCreation(BaseModel):
   password: str
   name: Optional[str] = None
   lastname: Optional[str] = None
-  isDean: Optional[bool] = False

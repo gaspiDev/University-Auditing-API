@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.presentation.router.v1.auth_router import AuthRouter
 from app.presentation.router.v1.budget_route import BudgetRouter
+from app.presentation.router.v1.expense_router import ExpenseRouter
 from app.presentation.router.v1.user_routes import UserRouter
 from .university_route import UniversityRoute
 
@@ -20,4 +21,5 @@ class ApiRouter:
   router.include_router(AuthRouter.router)
   router.include_router(UserRouter.router)
   router.include_router(UniversityRoute.router)
+  router.include_router(ExpenseRouter.router)
   router.include_router(BudgetRouter.router)

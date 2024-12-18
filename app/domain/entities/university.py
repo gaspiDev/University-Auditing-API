@@ -1,6 +1,9 @@
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from typing import List, Optional
+from sqlmodel import Relationship, SQLModel, Field
 from datetime import date
+
+from app.domain.entities.expense import Expense
+from app.domain.entities.user import User
 
 class University(SQLModel, table=True):
   __tablename__ = "universities"
@@ -8,6 +11,8 @@ class University(SQLModel, table=True):
   id: Optional[int] = Field(default=None, primary_key=True)
   budget_id: Optional[int] = Field(default=None, foreign_key="budgets.id")
   dean_id: Optional[int] = Field(default=None, foreign_key="users.id", unique=True)
+  dean: Optional[User] = Relationship(back_populates="university")
+  expenses: List[Expense] = Relationship(back_populates="university")
   name: str = Field(unique=True)
   province: str
   city: str

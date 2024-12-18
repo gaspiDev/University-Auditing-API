@@ -42,23 +42,9 @@ class UserService:
       password= hashed_password,
       name = user_for_creation.name,
       lastname= user_for_creation.lastname,
-      isDean= user_for_creation.isDean,
     )
     return self.repository.create(user).id
-  
-  def read(self) -> list[UserForView]:
-    users: list[User] = self.repository.read()
-    users_for_view: list[UserForView] = []
-    for u in users:
-      user_for_view = UserForView(
-        id= u.id,
-        name= u.name,
-        lastname= u.lastname,
-        dni= u.dni,
-        isDean= u.isDean
-      )
-      users_for_view.append(user_for_view)
-    return users_for_view
+
   
   def read_by_id(self, user_id: int) -> User:
     user = self.repository.read_by_id(user_id)
@@ -69,7 +55,7 @@ class UserService:
         name= user.name,
         lastname= user.lastname,
         dni= user.dni,
-        isDean= user.isDean
+        university= user.university
       )
     return user_for_view
   

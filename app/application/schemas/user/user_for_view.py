@@ -1,4 +1,7 @@
+from typing import Optional
 from pydantic import BaseModel
+
+from app.domain.entities.university import University
 
 
 class UserForView(BaseModel):
@@ -6,4 +9,4 @@ class UserForView(BaseModel):
   name: str
   lastname: str
   dni: int
-  isDean: bool
+  university: Optional[University] = None

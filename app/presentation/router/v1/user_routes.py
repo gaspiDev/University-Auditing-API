@@ -11,32 +11,22 @@ from helpers.auth_functions import current_user
 class UserRouter:
   router = APIRouter(tags=["User"], prefix="/user")
 
-  @router.post("/")
+  @router.post("/", status_code=201, response_model=dict)
   def create(user_for_creation: UserForCreation, session: Session = Depends(get_db)):
     service = UserService(session)
     return {"status": 201, "message": f"User ID: {service.create(user_for_creation)} successfully created."}
   
-  @router.get("/all")
-  def read(session: Session = Depends(get_db)):
+  @router.get("/", status_code=200)
+  async def read_current(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     service = UserService(session)
-    return service.read()
+    return service.read_by_id(user["id"])
   
-  @router.get("/{user_id}")
-  def read_by_id(user_id:int, session: Session = Depends(get_db)):
-    service = UserService(session)
-    return service.read_by_id(user_id)
-  
-  @router.put("/")
-  def update(session: Session = Depends(get_db)):
+  @router.put("/", status_code=200)
+  def update(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     pass
 
-  @router.delete("/{user_id}")
-  def delete(user_id: int, session: Session = Depends(get_db)):
+  @router.delete("/", status_code=200)
+  def delete(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
     service = UserService(session)
-    return {"status": 200, "message": f"User ID: {service.delete(user_id)} successfully deleted."}
+    return {"status": 200, "message": f"User ID: {service.delete(user["id"])} successfully deleted."}
   
-  @router.get("/")
-  async def read_current(user: Annotated[dict ,Depends(current_user)], session: Session = Depends(get_db)):
-    if user is None:
-      raise HTTPException(status_code=401, detail="Authentication Failed")
-    return {"User": user}
