@@ -11,6 +11,8 @@ python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 python-multipart = "*"
 python-dotenv = "*"
+aiosqlite = "*"
+greenlet = "*"
 
 [dev-packages]
 

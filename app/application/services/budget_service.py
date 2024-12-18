@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from sqlmodel import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.schemas.budget.budget_for_creation import BudgetForCreation
 from app.application.schemas.budget.budget_for_view import BudgetForView
@@ -8,11 +8,11 @@ from app.persistance.repositories.budget_repository import BudgetRepository
 
 
 class BudgetServices:
-  def __init__(self, session: Session):
+  def __init__(self, session: AsyncSession):
     self.repository = BudgetRepository(session)
   
-  def create(self, budget_for_creation: BudgetForCreation) -> int:
-    budgets = self.read()
+  async def create(self, budget_for_creation: BudgetForCreation) -> int:
+    budgets = await self.read()
     for b in budgets:
       if (b.type == budget_for_creation.type) and (b.year == budget_for_creation.year) and (b.approved_by == budget_for_creation.approved_by):
         raise HTTPException(status_code=400, detail="A party can approve only one budget per year and type")
@@ -23,10 +23,11 @@ class BudgetServices:
       total_budget= budget_for_creation.total_budget,
       approved_by= budget_for_creation.approved_by
     )
-    return self.repository.create(budget= budget).id
+    budget_created = await self.repository.create(budget)
+    return budget_created.id
   
-  def read(self) -> list[BudgetForView]:
-    budgets = self.repository.read()
+  async def read(self) -> list[BudgetForView]:
+    budgets = await self.repository.read()
     budgets_for_view: list[BudgetForView] = []
     for b in budgets:
       budget_for_view = BudgetForView(
@@ -39,8 +40,8 @@ class BudgetServices:
       budgets_for_view.append(budget_for_view)
     return budgets_for_view
   
-  def read_by_id(self, budget_id: int) -> BudgetForView:
-    budget = self.repository.read_by_id(budget_id)
+  async def read_by_id(self, budget_id: int) -> BudgetForView:
+    budget = await self.repository.read_by_id(budget_id)
     if not budget:
       raise HTTPException(status_code=404, detail=f"Budget ID {budget_id} doesn't exists.")
     budget_for_view = BudgetForView(
@@ -55,7 +56,10 @@ class BudgetServices:
   def update(self):
     pass
 
-  def delete(self, budget_id: int) -> int:
-    budget = self.repository.read_by_id(budget_id)
-    return self.repository.delete(budget).id
+  async def delete(self, budget_id: int) -> int:
+    budget = await self.repository.read_by_id(budget_id)
+    if not budget:
+      raise HTTPException(status_code=404, detail=f"Budget ID: {budget_id} doesn't exist.")
+    budget_deleted = await self.repository.delete(budget)
+    return budget_deleted.id
     

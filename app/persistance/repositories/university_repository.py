@@ -1,41 +1,37 @@
 from typing import Annotated
 from fastapi import HTTPException
-from sqlmodel import Session, select
-
+from sqlmodel import  select
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.entities.university import University
 
 class UniversityRepository:
-  def __init__(self, session: Session):
+  def __init__(self, session: AsyncSession):
     self.session = session
   
-  def create(self, university: University) -> University:
+  async def create(self, university: University) -> University:
     try:
       self.session.add(university)
-      self.session.commit()
-      self.session.refresh(university)
+      await self.session.commit()
+      await self.session.refresh(university)
       return university
     except Exception:
-      self.session.rollback()
+      await self.session.rollback()
       raise HTTPException(status_code=404, detail="University already exist: Name, Adress and Contact Email must be unique")
   
-  def read(self) -> list[University]:
-    statement = select(University).where(University.isActive == True)
-    results = self.session.exec(statement).all()
-    return results
+  async def read(self) -> list[University]:
+    statement = select(University)
+    results = await self.session.execute(statement)
+    return results.scalars().all()
   
-  def read_by_id(self, university_id: int) -> University:
+  async def read_by_id(self, university_id: int) -> University:
     statement = select(University).where(University.id == university_id)
-    result = self.session.exec(statement).first()
-    if not result:
-      raise HTTPException(status_code=404, detail=f"Id {university_id} doesn't exist.")
-    return result
+    result = await self.session.execute(statement)
+    return result.scalar_one_or_none()
   
   def update():
     pass
 
-  def delete(self, university: University) -> University:
-    university.isActive = False
-    self.session.add(university)
-    self.session.commit()
-    self.session.refresh(university)
+  async def delete(self, university: University) -> University:
+    await self.session.delete(university)
+    await self.session.commit()
     return university

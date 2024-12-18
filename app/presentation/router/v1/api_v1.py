@@ -11,11 +11,11 @@ class ApiRouter:
   router = APIRouter(tags=["All Endpoints"], prefix="/api/v1")
 
   @router.get("/healthcheck")
-  def health_check():
+  async def health_check():
     return "University Auditing API currently: ACTIVE"
 
   @router.get("/version")
-  def version():
+  async def version():
     return "v1.0"
 
   router.include_router(AuthRouter.router)

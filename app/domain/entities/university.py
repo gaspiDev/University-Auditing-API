@@ -19,4 +19,3 @@ class University(SQLModel, table=True):
   established: date
   address: Optional[str] = Field(default=None, unique=True)
   contact_email: Optional[str] = Field(default=None, unique=True)
-  isActive: Optional[bool] = True

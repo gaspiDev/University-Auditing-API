@@ -10,7 +10,6 @@ oauth2_bearer = OAuth2PasswordBearer(tokenUrl='api/v1/auth/token')
 async def current_user(token: Annotated[str, Depends(oauth2_bearer)]):
   load_dotenv()
   try:
-    print(token)
     payload = jwt.get_unverified_claims(token)
     dni= payload.get("sub")
     id= payload.get("id")

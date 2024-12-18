@@ -14,4 +14,5 @@ class AuthRouter:
   @router.post("/token", status_code=200, response_model= Token)
   async def auth(credentials: Annotated[OAuth2PasswordRequestForm, Depends()], session: Session = Depends(get_db)):
     service = UserService(session)
-    return service.auth(credentials.username, credentials.password)
+    user_auth = await service.auth(credentials.username, credentials.password)
+    return user_auth
