@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 from app.application.schemas.user.credentials import Credentials
 from app.application.schemas.user.user_for_creation import UserForCreation
+from app.application.schemas.user.user_for_update import UserForUpdate
 from app.application.schemas.user.user_for_view import UserForView
 from app.domain.entities.user import User
 from app.persistance.repositories.user_repository import UserRepository
@@ -60,8 +61,13 @@ class UserService:
       )
     return user_for_view
   
-  async def update(self):
-    pass
+  async def update(self, user_for_update: UserForUpdate, user_id: int):
+    user = await self.repository.read_by_id(user_id)
+    if user_for_update.name:
+      user.name = user_for_update.name
+    if user_for_update.lastname:
+      user.lastname = user_for_update.lastname
+    user_updated = await self.repository.create(user)
 
   async def delete(self, user_id: int) -> int:
     user = await self.repository.read_by_id(user_id)

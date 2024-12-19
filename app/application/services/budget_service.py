@@ -2,6 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.schemas.budget.budget_for_creation import BudgetForCreation
+from app.application.schemas.budget.budget_for_update import BudgetForUpdate
 from app.application.schemas.budget.budget_for_view import BudgetForView
 from app.domain.entities.budget import Budget
 from app.persistance.repositories.budget_repository import BudgetRepository
@@ -53,9 +54,19 @@ class BudgetServices:
       )
     return budget_for_view
   
-  def update(self):
-    pass
+  async def update(self, budget_for_update: BudgetForUpdate) -> int:
+    budget = await self.repository.read_by_id(budget_for_update.id)
+    if not budget:
+      raise HTTPException(status_code=404, detail=f"Budget ID: {budget_for_update.id} doesn't exist")
+    
+    budget.total_budget = budget_for_update.total_budget
+    if budget_for_update.approved_by:
+      budget.approved_by = budget_for_update.approved_by
 
+    budget_updated = await self.repository.create(budget)
+
+    return budget_updated.id
+  
   async def delete(self, budget_id: int) -> int:
     budget = await self.repository.read_by_id(budget_id)
     if not budget:

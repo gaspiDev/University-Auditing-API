@@ -36,8 +36,15 @@ class UserRepository:
     result = await self.session.execute(statement)
     return result.scalar_one_or_none()
   
-  async def update(self):
-    pass
+  async def update(self, user: User):
+    try:
+      self.session.add(user)
+      await self.session.commit()
+      await self.session.refresh(user)
+      return user
+    except Exception:
+      await self.session.rollback()
+      raise HTTPException(status_code=400, detail=f"Couldn't save User {user.dni} in db.")
 
   async def delete(self, user: User) -> User:
     try: 

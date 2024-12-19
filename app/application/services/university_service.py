@@ -3,6 +3,7 @@ from fastapi import Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.schemas.university.university_for_creation import UniversityForCreation
+from app.application.schemas.university.university_for_update import UniversityForUpdate
 from app.application.schemas.university.university_for_view import UniversityForView
 from app.application.services.user_service import UserService
 from app.domain.entities.university import University
@@ -72,9 +73,27 @@ class UniversityService:
     )
     return university_for_view
   
-  async def update():
-    pass
-  
+  async def update(self, university_for_update: UniversityForUpdate, user_id: int) -> int:
+    user = await self.user_service.read_by_id(user_id)
+    university = await self.repository.read_by_id(user.university.id)
+    
+    if university_for_update.budget_id:
+      university.budget_id = university_for_update.budget_id
+    if university_for_update.name:
+      university.name = university_for_update.name
+    if university_for_update.province:
+      university.province = university_for_update.province
+    if university_for_update.city:
+      university.city = university_for_update.city
+    if university_for_update.address:
+      university.address = university_for_update.address
+    if university_for_update.contact_email:
+      university.contact_email = university_for_update.contact_email
+    
+    university_updated = await self.repository.create(university)
+
+    return university_updated.id
+
   async def delete(self, user_id: int) -> int:
     user = await self.user_service.read_by_id(user_id)
     if not user.university:

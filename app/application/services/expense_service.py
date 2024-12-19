@@ -1,10 +1,13 @@
+from typing import Optional
 from fastapi import HTTPException
 from sqlmodel import Session
 
 from app.application.schemas.expense.expense_for_creation import ExpenseForCreation
+from app.application.schemas.expense.expense_for_update import ExpenseForUpdate
 from app.application.schemas.expense.expense_for_view import ExpenseForView
 from app.application.services.user_service import UserService
 from app.domain.entities.expense import Expense
+from app.domain.enums.category_enum import CategoryEnum
 from app.persistance.repositories.expense_repository import ExpenseRepository
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -57,9 +60,18 @@ class ExpenseService:
 
     return expense_for_view
   
-  def update(self):
-    pass
-  
+  async def update(self, expense_for_update: ExpenseForUpdate, category: Optional[CategoryEnum], user_id: int) -> int:
+    expense = await self.repository.read_by_id(expense_for_update.id)
+    if not expense:
+      raise HTTPException(status_code=404, detail=f"Expense ID: {expense_for_update.id} doesn't exist")
+    if category:
+      expense.category = category
+    if expense_for_update.amount >= 0:
+      expense.amount = expense_for_update.amount
+    
+    expense_updated = await self.repository.create(expense)
+    return expense_updated.id
+
   async def delete(self, expense_id: int, dean_id: int) -> int:
     expense = await self.repository.read_by_id(expense_id)
     if expense.university.dean_id != dean_id:

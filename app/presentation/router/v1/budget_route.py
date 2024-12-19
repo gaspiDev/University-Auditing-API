@@ -2,7 +2,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 
 from app.application.schemas.budget.budget_for_creation import BudgetForCreation
-from app.application.schemas.budget.budget_for_view import BudgetForView
+from app.application.schemas.budget.budget_for_update import BudgetForUpdate
 from app.application.services.budget_service import BudgetServices
 from app.persistance.config.database import get_db
 
@@ -29,9 +29,11 @@ class BudgetRouter:
     return {"status": 200, "budget": budget}
   
   @router.put("/", status_code=200, response_model=dict)
-  async def update(session: AsyncSession = Depends(get_db)):
+  async def update(budget_for_update: BudgetForUpdate, session: AsyncSession = Depends(get_db)):
     service = BudgetServices(session= session)
-    pass
+    budget_updated_id = await service.update(budget_for_update)
+    
+    return {"status": 200, "message": f"Budget ID: {budget_updated_id} is updated."}
 
   @router.delete("/", status_code=200, response_model=dict)
   async def delete(budget_id: int, session: AsyncSession = Depends(get_db)):

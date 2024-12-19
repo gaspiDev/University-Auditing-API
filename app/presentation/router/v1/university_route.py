@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.schemas.university.university_for_creation import UniversityForCreation
+from app.application.schemas.university.university_for_update import UniversityForUpdate
 from app.application.schemas.university.university_for_view import UniversityForView
 from app.persistance.config.database import get_db
 from helpers.auth_functions import current_user
@@ -30,9 +31,10 @@ class UniversityRoute:
     return {"status": 200, "university": university}
   
   @router.put("/", status_code=200, response_model=dict)
-  async def update(user: Annotated[dict ,Depends(current_user)], session: AsyncSession = Depends(get_db)):
+  async def update(university_for_update: UniversityForUpdate, user: Annotated[dict ,Depends(current_user)], session: AsyncSession = Depends(get_db)):
     service = UniversityService(session)
-    pass
+    updated_university_id = await service.update(university_for_update, user["id"])
+    return {"status": 200, "message": f"University ID: {updated_university_id} is updated."}
 
   @router.delete("/", status_code=200, response_model=dict)
   async def delete(user: Annotated[dict ,Depends(current_user)], session: AsyncSession = Depends(get_db)):

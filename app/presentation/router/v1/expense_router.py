@@ -1,7 +1,8 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.schemas.expense.expense_for_creation import ExpenseForCreation
+from app.application.schemas.expense.expense_for_update import ExpenseForUpdate
 from app.application.services.expense_service import ExpenseService
 from app.domain.enums.category_enum import CategoryEnum
 from app.persistance.config.database import get_db
@@ -30,8 +31,12 @@ class ExpenseRouter:
     return {"status": 200, "expense": expense}
     
   @router.put("/", status_code=200, response_model=dict)
-  async def update(session: AsyncSession = Depends(get_db)):
-    pass
+  async def update(category: Optional[CategoryEnum], expense_for_update: ExpenseForUpdate, user: Annotated[dict ,Depends(current_user)], session: AsyncSession = Depends(get_db)):
+    service = ExpenseService(session)
+    expense_updated_id = await service.update(expense_for_update, category, user["id"])
+    
+    return {"status": 200 , "message":f"Expense ID: {expense_updated_id} is updated"}
+
   
   @router.delete("/", status_code=200, response_model=dict)
   async def update(expense_id: int, user: Annotated[dict ,Depends(current_user)], session: AsyncSession = Depends(get_db)):
