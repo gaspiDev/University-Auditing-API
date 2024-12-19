@@ -1,5 +1,7 @@
+import datetime
 from typing import Optional
 from fastapi import HTTPException
+from sqlalchemy import func
 from sqlmodel import  select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.entities.expense import Expense
@@ -40,3 +42,13 @@ class ExpenseRepository:
     await self.session.commit()
     await self.session.refresh(expense)
     return expense
+  
+  async def total_expenses_by_id_and_year(self, university_id, year: int) -> float:
+    statement = (
+      select(func.sum(Expense.amount))
+      .where(Expense.university_id == university_id)
+      .where(func.extract('year', Expense.date) == year)
+    ) 
+    result = await self.session.execute(statement)
+    
+    return result.scalar_one_or_none() or 0.0

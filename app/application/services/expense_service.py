@@ -1,7 +1,7 @@
 from typing import Optional
 from fastapi import HTTPException
 from sqlmodel import Session
-
+from datetime import datetime
 from app.application.schemas.expense.expense_for_creation import ExpenseForCreation
 from app.application.schemas.expense.expense_for_update import ExpenseForUpdate
 from app.application.schemas.expense.expense_for_view import ExpenseForView
@@ -78,3 +78,13 @@ class ExpenseService:
       raise HTTPException(status_code=403,  detail="Forbiden, can't delete expenses of another university.")
     expense_deleted = await self.repository.delete(expense.id)
     return expense_deleted.id
+  
+  async def total_expenses_by_id_and_year(self, university_id: int, year: int = None) -> float:
+    if year is None:
+      year = datetime.now().year
+    expenses = await self.repository.total_expenses_by_id_and_year(university_id, year)
+    return expenses
+  
+  async def under_budget(self, university_id: int) -> bool:
+    total_expense = await self.total_expenses_by_id_and_year(university_id)
+    return is_under_budget

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.schemas.university.university_for_creation import UniversityForCreation
 from app.application.schemas.university.university_for_update import UniversityForUpdate
 from app.application.schemas.university.university_for_view import UniversityForView
+from app.application.services.expense_service import ExpenseService
 from app.application.services.user_service import UserService
 from app.domain.entities.university import University
 from app.persistance.config.database import get_db
@@ -15,6 +16,7 @@ class UniversityService:
   def __init__(self, session: AsyncSession):
     self.repository = UniversityRepository(session)
     self.user_service = UserService(session)
+    self.expense_service = ExpenseService(session)
   
   async def create(self, university_input: UniversityForCreation, user_id: int) -> int:
     user = await self.user_service.read_by_id(user_id) 
@@ -101,3 +103,17 @@ class UniversityService:
     university = await self.repository.read_by_id(user.university.id)
     university_deleted = await self.repository.delete(university)
     return university_deleted.id
+  
+  async def total_expenses_by_year(self, university_id: int, year: int) -> float:
+    expenses_by_year = await self.expense_service.total_expenses_by_id_and_year(university_id, year)
+    return expenses_by_year
+  
+  async def under_budget(self, university_id) -> bool:
+    total_expense = await self.expense_service.total_expenses_by_id_and_year(university_id)
+    university = await self.repository.read_by_id(university_id)
+    total_budget = university.budget.total_budget
+
+    if total_expense <= total_budget:
+      return True
+    else: 
+      return False

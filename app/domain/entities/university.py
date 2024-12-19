@@ -9,7 +9,8 @@ class University(SQLModel, table=True):
   __tablename__ = "universities"
 
   id: Optional[int] = Field(default=None, primary_key=True)
-  budget_id: Optional[int] = Field(default=None, foreign_key="budgets.id")
+  budget_id: int = Field(default=None, foreign_key="budgets.id")
+  budget: Optional["Budget"] = Relationship(back_populates="universities")
   dean_id: Optional[int] = Field(default=None, foreign_key="users.id", unique=True)
   dean: Optional[User] = Relationship(back_populates="university")
   expenses: List[Expense] = Relationship(back_populates="university")

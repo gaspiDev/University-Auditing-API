@@ -43,7 +43,4 @@ class ExpenseRouter:
     service = ExpenseService(session)
     expense_deleted = await service.delete(expense_id, user["id"])
     return {"status": 200, "message": f"Expense ID: {expense_deleted} successfully deleted"}
-    
-
-
   

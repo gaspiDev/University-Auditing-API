@@ -41,3 +41,16 @@ class UniversityRoute:
     service = UniversityService(session= session)
     university_deleted_id = await service.delete(user["id"])
     return {"status": 200, "message": f"University ID: {university_deleted_id} successfully deleted."}
+  
+  @router.get("/{university_id}/total-expense/{year}", status_code=200, response_model=dict)
+  async def total_expense_by_year(university_id: int, year: int, session: AsyncSession = Depends(get_db)):
+    service = UniversityService(session= session)
+    total_expenses = await service.total_expenses_by_year(university_id, year)
+    return {"status": 200, "content": total_expenses}
+  
+  @router.get("/{university_id}/under-budget", status_code=200, response_model=dict)
+  async def underbudget(university_id: int, session: AsyncSession = Depends(get_db)):
+    service = UniversityService(session= session)
+    is_under_budget = await service.under_budget(university_id)
+    return {"status": 200, "under_budget": is_under_budget }
+

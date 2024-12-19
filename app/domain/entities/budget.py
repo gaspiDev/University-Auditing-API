@@ -1,5 +1,7 @@
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from typing import List, Optional
+from sqlmodel import Relationship, SQLModel, Field
+
+from app.domain.entities.university import University
 
 class Budget(SQLModel, table=True):
   __tablename__ = "budgets"
@@ -9,4 +11,5 @@ class Budget(SQLModel, table=True):
   year: int
   total_budget: float
   approved_by: Optional[int] = Field(foreign_key="users.id")
+  universities: List[University] = Relationship(back_populates="budget")
   isActive: Optional[bool] = True
