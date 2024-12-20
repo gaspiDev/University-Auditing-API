@@ -10,6 +10,6 @@ class Budget(SQLModel, table=True):
   type: str
   year: int
   total_budget: float
-  approved_by: Optional[int] = Field(foreign_key="users.id")
+  approved_by: Optional[str]
   universities: List[University] = Relationship(back_populates="budget")
   isActive: Optional[bool] = True

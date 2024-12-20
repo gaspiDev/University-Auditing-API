@@ -22,6 +22,7 @@ EXPENSE crud endpoints are protected with USER auth.
 - **BUDGET:** represents the rule that an university must follow.
 BUDGET crud endpoints are unporteced.
 *next feature:* BUDGET crud endpoints protected with the aut of new entity PARTY (representing the politicalparty taht approved the anual budget)
+> #### To better identify the endpoints go to http://127.0.0.1:8000/docs  for SwaggerUI interacctive documentation
 ---
 ### Posible integration with another API:
 > #### Our API would call a public government API periodically to get the most recent anual budgets with better details like which political party approved it, how many negative votes got, and more.

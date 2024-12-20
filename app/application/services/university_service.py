@@ -21,13 +21,13 @@ class UniversityService:
   async def create(self, university_input: UniversityForCreation, user_id: int) -> int:
     user = await self.user_service.read_by_id(user_id) 
     if user.university:
-      raise HTTPException(status_code=404, detail="Deans can be linked with only one university")
+      raise HTTPException(status_code=400, detail="Deans can be linked with only one university")
     if university_input.budget_type.lower() == "public":
       budget_id = 1
     elif university_input.budget_type.lower() == "private":
       budget_id = 2
     else:
-      raise HTTPException(status_code=404, detail="Invalid budget type. Must be public or private")
+      raise HTTPException(status_code=400, detail="Invalid budget type. Must be public or private")
     university = University(
       budget_id= budget_id,
       dean_id= user_id,
