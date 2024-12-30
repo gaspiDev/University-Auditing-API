@@ -4,14 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+# TODO: All versions should be pinned
 fastapi = {extras = ["standard"], version = "*"}
 sqlmodel = "*"
 alembic = "*"
+# TODO: Latest release of python-jose has known vulnerabilities as it is 3 years
+# old, consider updating it to pyjwt
 python-jose = {extras = ["cryptography"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 python-multipart = "*"
 python-dotenv = "*"
 aiosqlite = "*"
+# TODO: are greenlets explicitly used in the code?
 greenlet = "*"
 
 [dev-packages]

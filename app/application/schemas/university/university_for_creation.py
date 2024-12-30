@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class UniversityForCreation(BaseModel):
-  budget_type: str
+  budget_type: str  # TODO: This should be an Enum
   name: str
   province: str
   city: str

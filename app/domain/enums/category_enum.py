@@ -1,6 +1,6 @@
 from enum import Enum
 
-
+# TODO: Use from enum import StrEnum instead
 class CategoryEnum(str, Enum):
     SALARIES = "salaries"
     UTILITIES = "utilities"

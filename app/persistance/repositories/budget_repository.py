@@ -1,6 +1,9 @@
 from typing import Optional
 from fastapi import HTTPException
-from sqlmodel import  select
+
+
+from sqlmodel import  select 
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.domain.entities.budget import Budget
 
@@ -10,6 +13,9 @@ class BudgetRepository:
     self.session = session
 
   async def create(self, budget: Budget) -> Budget:
+    # TODO: Instead of using try/except, a with statement is usually more pythonic
+    # and hides the exception handling
+    # https://docs.sqlalchemy.org/en/20/orm/session_basics.html#framing-out-a-begin-commit-rollback-block
     try:    
       self.session.add(budget)
       await self.session.commit()

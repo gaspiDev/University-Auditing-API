@@ -7,6 +7,7 @@ from app.presentation.router.v1.user_routes import UserRouter
 from .university_route import UniversityRoute
 
 
+# TODO: Class is not necessary
 class ApiRouter:
   router = APIRouter(tags=["All Endpoints"], prefix="/api/v1")
 

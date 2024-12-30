@@ -23,6 +23,9 @@ class ExpenseRepository:
       raise HTTPException(status_code=404, detail="Couldn't save expense on db")
 
   async def read(self) -> list[Expense]:
+    # TODO: Instead of always querying for isActive == True, a SQL View could be
+    # used instead if the overhead is worth it
+    # https://github.com/sqlalchemy/sqlalchemy/wiki/Views
     statement = select(Expense).where(Expense.isActive == True).options(selectinload(Expense.university))
     result = await self.session.execute(statement)
     return result.scalars().all()
@@ -43,6 +46,10 @@ class ExpenseRepository:
     await self.session.refresh(expense)
     return expense
   
+  # TODO: Instead of creating custom methods for each new query, it could be a 
+  # better alternative to add a new method `run_query(self, query: Query) -> T | Sequence[T] | None`
+  # that takes a query object and returns the result of that query
+  # https://martinfowler.com/eaaCatalog/queryObject.html
   async def total_expenses_by_id_and_year(self, university_id, year: int) -> float:
     statement = (
       select(func.sum(Expense.amount))
