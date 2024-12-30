@@ -8,6 +8,8 @@ from app.domain.entities.expense import Expense
 def db_startup():
   SYNC_DATABASE_URL = "sqlite:///./ua_dataset.db"
   sync_engine = create_engine(SYNC_DATABASE_URL)
+  # TODO: The tables could be exposed in a constant TABLES inside the __init__
+  # of app.domain.entities
   SQLModel.metadata.create_all(bind=sync_engine, tables=[User.__table__, Budget.__table__, University.__table__, Expense.__table__])
   
 

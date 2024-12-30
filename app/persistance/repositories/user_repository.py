@@ -37,6 +37,8 @@ class UserRepository:
     return result.scalar_one_or_none()
   
   async def update(self, user: User):
+    # TODO: This implementation is identical to create, it should call the other
+    # method instead of duplicating code
     try:
       self.session.add(user)
       await self.session.commit()
@@ -47,6 +49,7 @@ class UserRepository:
       raise HTTPException(status_code=400, detail=f"Couldn't save User {user.dni} in db.")
 
   async def delete(self, user: User) -> User:
+    # TODO: This should be rename to `soft_delete` instead to be more accurate
     try: 
       user.isActive = False
       self.session.add(user)

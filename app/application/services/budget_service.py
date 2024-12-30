@@ -8,6 +8,7 @@ from app.domain.entities.budget import Budget
 from app.persistance.repositories.budget_repository import BudgetRepository
 
 
+# TODO: Services could be easily transform to dataclasses
 class BudgetServices:
   def __init__(self, session: AsyncSession):
     self.repository = BudgetRepository(session)

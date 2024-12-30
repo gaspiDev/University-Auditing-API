@@ -13,6 +13,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class ExpenseService:
+  # TODO: In all services, the repositories and other services should be passed
+  # using dependency injection instead of creating new objects explicitly
   def __init__(self, session: AsyncSession):
     self.repository = ExpenseRepository(session)
     self.user_service = UserService(session)

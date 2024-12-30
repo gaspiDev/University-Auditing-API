@@ -10,4 +10,7 @@ class ExpenseForView(BaseModel):
   date: date
   amount: float
   category: Optional[CategoryEnum] = None
+  
+  # TODO: Expense is using university id but User is using the nested object,
+  # there should be a consistent approach
   university_id: int
