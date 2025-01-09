@@ -1,6 +1,5 @@
 from typing import Optional
 from fastapi import HTTPException
-from sqlmodel import Session
 from datetime import datetime
 from app.application.schemas.expense.expense_for_creation import ExpenseForCreation
 from app.application.schemas.expense.expense_for_update import ExpenseForUpdate

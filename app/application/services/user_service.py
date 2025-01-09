@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta
-from fastapi import Depends, HTTPException
-from fastapi.security import OAuth2PasswordBearer
+from fastapi import  HTTPException
 import jwt
 from dotenv import load_dotenv
 import os
-from app.application.schemas.user.credentials import Credentials
 from app.application.schemas.user.user_for_creation import UserForCreation
 from app.application.schemas.user.user_for_update import UserForUpdate
 from app.application.schemas.user.user_for_view import UserForView

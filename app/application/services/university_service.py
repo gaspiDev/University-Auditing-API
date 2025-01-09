@@ -1,5 +1,4 @@
-from typing import Annotated
-from fastapi import Depends, HTTPException
+from fastapi import  HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.application.schemas.university.university_for_creation import UniversityForCreation
@@ -8,7 +7,6 @@ from app.application.schemas.university.university_for_view import UniversityFor
 from app.application.services.expense_service import ExpenseService
 from app.application.services.user_service import UserService
 from app.domain.entities.university import University
-from app.persistance.config.database import get_db
 from ...persistance.repositories.university_repository import UniversityRepository
 
 

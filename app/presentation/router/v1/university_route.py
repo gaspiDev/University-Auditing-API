@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.application.schemas.university.university_for_creation import UniversityForCreation
 from app.application.schemas.university.university_for_update import UniversityForUpdate
-from app.application.schemas.university.university_for_view import UniversityForView
 from app.persistance.config.database import get_db
 from helpers.auth_functions import current_user
 from ....application.services.university_service import UniversityService

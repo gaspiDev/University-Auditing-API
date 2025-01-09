@@ -3,7 +3,6 @@ from fastapi import APIRouter, Depends
 
 from app.application.schemas.user.user_for_creation import UserForCreation
 from app.application.schemas.user.user_for_update import UserForUpdate
-from app.application.schemas.user.user_for_view import UserForView
 from app.application.services.user_service import UserService
 from app.persistance.config.database import get_db
 from helpers.auth_functions import current_user

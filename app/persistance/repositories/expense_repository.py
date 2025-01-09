@@ -1,4 +1,3 @@
-import datetime
 from typing import Optional
 from fastapi import HTTPException
 from sqlalchemy import func

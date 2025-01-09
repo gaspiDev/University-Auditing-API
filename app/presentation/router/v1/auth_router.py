@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlmodel import Session
 
-from app.application.schemas.user.credentials import Credentials, Token
+from app.application.schemas.user.credentials import Token
 from app.application.services.user_service import UserService
 from app.persistance.config.database import get_db
 

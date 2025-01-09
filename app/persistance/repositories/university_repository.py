@@ -1,4 +1,3 @@
-from typing import Annotated
 from fastapi import HTTPException
 from sqlmodel import  select
 from sqlalchemy.ext.asyncio import AsyncSession
