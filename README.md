@@ -3,7 +3,7 @@
 ---
 ### Introduction:
 ###### Here it's a Mermaid Entities Diagram to get you to know the domain of the API
-![GitHub Logo](.\assets\mermaid-erd-ua.png)
+![GitHub Logo](./assets/mermaid-erd-ua.png)
 
 ---
 #### Entities behaviors to be consider:
@@ -26,4 +26,4 @@ BUDGET crud endpoints are unporteced.
 ---
 ### Posible integration with another API:
 > #### Our API would call a public government API periodically to get the most recent anual budgets with better details like which political party approved it, how many negative votes got, and more.
-![GitHub Logo](.\assets\mermaid-sd-ua.png)
+![GitHub Logo](./assets/mermaid-sd-ua.png)
