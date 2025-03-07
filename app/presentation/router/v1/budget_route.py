@@ -8,35 +8,45 @@ from app.persistance.config.database import get_db
 
 
 class BudgetRouter:
-  router = APIRouter(tags=["Budget"], prefix= "/budget")
+    router = APIRouter(tags=["Budget"], prefix="/budget")
 
-  @router.post("/", status_code=201, response_model=dict)
-  async def create(budget_for_creation: BudgetForCreation, session: AsyncSession = Depends(get_db)):
-    serivce = BudgetServices(session)
-    budget_created_id = await serivce.create(budget_for_creation)
-    return {"status": 201, "message": f"Budget ID: {budget_created_id} successfully created."}
-  
-  @router.get("/", status_code=200, response_model=dict)
-  async def read(session: AsyncSession = Depends(get_db)):
-    service = BudgetServices(session= session)
-    budgets = await service.read()
-    return {"status": 200, "budgets": budgets}
+    @router.post("/", status_code=201, response_model=dict)
+    async def create(
+        budget_for_creation: BudgetForCreation, session: AsyncSession = Depends(get_db)
+    ):
+        serivce = BudgetServices(session)
+        budget_created_id = await serivce.create(budget_for_creation)
+        return {
+            "status": 201,
+            "message": f"Budget ID: {budget_created_id} successfully created.",
+        }
 
-  @router.get("/{budget_id}", status_code=200, response_model=dict)
-  async def read(budget_id: int, session: AsyncSession = Depends(get_db)):
-    service = BudgetServices(session= session)
-    budget = await service.read_by_id(budget_id)
-    return {"status": 200, "budget": budget}
-  
-  @router.put("/", status_code=200, response_model=dict)
-  async def update(budget_for_update: BudgetForUpdate, session: AsyncSession = Depends(get_db)):
-    service = BudgetServices(session= session)
-    budget_updated_id = await service.update(budget_for_update)
-    
-    return {"status": 200, "message": f"Budget ID: {budget_updated_id} is updated."}
+    @router.get("/", status_code=200, response_model=dict)
+    async def read(session: AsyncSession = Depends(get_db)):
+        service = BudgetServices(session=session)
+        budgets = await service.read()
+        return {"status": 200, "budgets": budgets}
 
-  @router.delete("/", status_code=200, response_model=dict)
-  async def delete(budget_id: int, session: AsyncSession = Depends(get_db)):
-    service = BudgetServices(session= session)
-    budget_deleted_id = await service.delete(budget_id)
-    return {"status": 200, "message": f"Budget ID: {budget_deleted_id} successfully deleted"}
+    @router.get("/{budget_id}", status_code=200, response_model=dict)
+    async def read(budget_id: int, session: AsyncSession = Depends(get_db)):
+        service = BudgetServices(session=session)
+        budget = await service.read_by_id(budget_id)
+        return {"status": 200, "budget": budget}
+
+    @router.put("/", status_code=200, response_model=dict)
+    async def update(
+        budget_for_update: BudgetForUpdate, session: AsyncSession = Depends(get_db)
+    ):
+        service = BudgetServices(session=session)
+        budget_updated_id = await service.update(budget_for_update)
+
+        return {"status": 200, "message": f"Budget ID: {budget_updated_id} is updated."}
+
+    @router.delete("/", status_code=200, response_model=dict)
+    async def delete(budget_id: int, session: AsyncSession = Depends(get_db)):
+        service = BudgetServices(session=session)
+        budget_deleted_id = await service.delete(budget_id)
+        return {
+            "status": 200,
+            "message": f"Budget ID: {budget_deleted_id} successfully deleted",
+        }

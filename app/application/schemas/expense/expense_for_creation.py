@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 
 class ExpenseForCreation(BaseModel):
-  date: date
-  amount: float
+    date: date
+    amount: float

@@ -12,4 +12,3 @@ class User(SQLModel, table=True):
     lastname: Optional[str] = None
     isActive: Optional[bool] = True
     university: Optional["University"] = Relationship(back_populates="dean")
-  
