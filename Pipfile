@@ -4,15 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = {extras = ["standard"], version = "*"}
-sqlmodel = "*"
-alembic = "*"
-python-jose = {extras = ["cryptography"], version = "*"}
-passlib = {extras = ["bcrypt"], version = "*"}
-python-multipart = "*"
-python-dotenv = "*"
-aiosqlite = "*"
-greenlet = "*"
+fastapi = {extras = ["standard"], version = "==0.115.6"}
+sqlmodel = "==0.0.22"
+alembic = "==1.14.0"
+passlib = {extras = ["bcrypt"], version = "==1.7.4"}
+python-multipart = "==0.0.19"
+python-dotenv = "==1.0.1"
+aiosqlite = "==0.20.0"
+pyjwt = "==2.10.1"
+greenlet = "==3.1.1"
+black = "==25.1.0"
 
 [dev-packages]
 
